@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>WooW! Daily Drops · {{ data }}</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root {
+  --preto: #000000; --off: #F3F3F3; --cinza: #8E8E8E;
+  --roxo: #7C16DB; --magenta: #DC0C9F; --azul: #1291E2;
+  --laranja: #FB5B12; --verde: #00FC8A; --amarelo: #E8F102;
+  --display: 'Anton', 'Helvetica Neue', Impact, sans-serif;
+  --body: 'Helvetica Neue', 'Inter', Arial, sans-serif;
+  --margem: 88px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--preto); }
+body { font-family: var(--body); -webkit-font-smoothing: antialiased; }
+
+.cena { position: absolute; inset: 0; overflow: hidden; visibility: hidden; background: var(--preto); color: var(--off); }
+.cena.ativa { visibility: visible; }
+.cena.claro { background: var(--off); color: var(--preto); }
+
+/* faixa com as 6 cores do brand book */
+.arco { position: absolute; left: var(--margem); right: var(--margem); height: 14px; display: flex; }
+.arco i { flex: 1; }
+.arco i:nth-child(1) { background: var(--roxo); }
+.arco i:nth-child(2) { background: var(--magenta); }
+.arco i:nth-child(3) { background: var(--azul); }
+.arco i:nth-child(4) { background: var(--laranja); }
+.arco i:nth-child(5) { background: var(--verde); }
+.arco i:nth-child(6) { background: var(--amarelo); }
+
+.topo { position: absolute; left: var(--margem); right: var(--margem); top: 226px; display: flex; justify-content: space-between; align-items: center; gap: 24px; z-index: 2; }
+.kicker { font-weight: 700; font-size: 34px; letter-spacing: .14em; text-transform: uppercase; }
+.meta { font-weight: 400; font-size: 28px; letter-spacing: .08em; text-transform: uppercase; color: var(--cinza); }
+.claro .meta { color: #555555; }
+.chip { display: inline-block; padding: 12px 22px 10px; font-weight: 700; font-size: 30px; letter-spacing: .12em; text-transform: uppercase; background: var(--c); color: #FFFFFF; }
+.chip-manchete { background: var(--amarelo); color: var(--preto); }
+.selo-ia { position: absolute; right: 18px; bottom: 14px; padding: 6px 12px; font-size: 20px; letter-spacing: .06em; color: rgba(243,243,243,.92); background: rgba(0,0,0,.5); z-index: 4; }
+
+.fit-area { position: absolute; left: var(--margem); right: var(--margem); display: flex; flex-direction: column; justify-content: center; }
+.fit { width: 100%; text-wrap: balance; }
+
+/* abertura: o 1º quadro vira capa; o texto já está lá, só a imagem de fundo respira */
+.abertura .fundo { position: absolute; inset: 0; overflow: hidden; }
+/* desfocado: ampliada no fundo, qualquer letra falsa da imagem gerada ficaria legível */
+.abertura .fundo img { display: block; width: 100%; height: 100%; object-fit: cover; filter: blur(7px); animation: aproxima linear both; }
+.abertura .veu-abertura { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.62) 45%, rgba(0,0,0,.94) 100%); }
+.abertura .arco { top: 320px; }
+.abertura .fit-area { top: 400px; height: 810px; }
+.abertura h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase; line-height: 1.2; transform-origin: left center; animation: respira linear both; }
+.abertura .resumo { position: absolute; left: var(--margem); right: var(--margem); top: 1236px; display: flex; flex-direction: column; gap: 10px; }
+.abertura .resumo span { white-space: nowrap; }
+.abertura .meta { color: #B8B8B8; }
+.abertura .resumo .ia { font-size: 20px; color: #8E8E8E; }
+@keyframes respira { from { transform: scale(1); } to { transform: scale(1.04); } }
+
+/* notícia: a faixa de imagem troca de estado a cada frase */
+.faixa { position: absolute; left: 0; top: 300px; width: 1080px; height: 720px; overflow: hidden; background: #111111; animation: revela 650ms cubic-bezier(.7,0,.2,1) both; }
+.faixa > img { display: block; width: 100%; height: 100%; object-fit: cover; animation: aproxima linear both; }
+.faixa.vazia { background: radial-gradient(circle at 30% 35%, color-mix(in srgb, var(--c) 60%, #000) 0%, #000 75%); }
+.num-grande { position: absolute; left: 64px; bottom: 10px; font-family: var(--display); font-size: 420px; line-height: 1; color: var(--c); transform-origin: left bottom; }
+.beat { position: absolute; inset: 0; visibility: hidden; z-index: 3; }
+.beat.on { visibility: visible; }
+.veu { position: absolute; inset: 0; background: rgba(0,0,0,.66); animation: aparece 220ms ease-out both; }
+.dest-area { position: absolute; inset: 56px 72px; display: flex; flex-direction: column; justify-content: center; }
+.dest { font-family: var(--display); font-weight: 400; text-transform: uppercase; line-height: 1.12; text-align: center; color: var(--off); animation: pop 460ms cubic-bezier(.3,1.5,.5,1) both; }
+.dest .conta { color: var(--amarelo); }
+.noticia .titulo-area { top: 1052px; height: 232px; }
+/* depois de lido, o título sai de cena: no destaque ficam só o destaque e a legenda (--recuo vem do seek) */
+.noticia .titulo-area { opacity: calc(1 - var(--recuo, 0)); transform: translateY(calc(-24px * var(--recuo, 0))); }
+.noticia h2 { font-weight: 700; line-height: 1.1; letter-spacing: -.015em; }
+.noticia.eh-manchete h2 { font-family: var(--display); font-weight: 400; text-transform: uppercase; line-height: 1.2; letter-spacing: 0; }
+@keyframes revela { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes aproxima { from { transform: scale(1.02); } to { transform: scale(1.12); } }
+@keyframes aparece { from { opacity: 0; } to { opacity: 1; } }
+
+/* fecho */
+.fecho .arco { top: 320px; transform-origin: left center; }
+.fecho .fit-area { top: 400px; height: 620px; }
+.fecho h2 { font-family: var(--display); font-weight: 400; text-transform: uppercase; line-height: 1.2; }
+.fecho .cta { position: absolute; left: var(--margem); top: 1080px; padding: 22px 34px 18px; font-weight: 700; font-size: 42px; letter-spacing: .12em; text-transform: uppercase; background: var(--preto); color: var(--off); }
+.fecho .assina { position: absolute; left: var(--margem); right: var(--margem); top: 1236px; }
+
+/* entradas: o tempo vem do seek(), nunca do relógio */
+.entra { animation: sobe 560ms cubic-bezier(.2,.8,.2,1) both; }
+.pop { animation: pop 520ms cubic-bezier(.3,1.5,.5,1) both; }
+.estica { animation: estica 600ms cubic-bezier(.2,.8,.2,1) both; }
+@keyframes sobe { from { opacity: 0; transform: translateY(48px); } to { opacity: 1; transform: none; } }
+@keyframes pop { from { opacity: 0; transform: scale(.55); } to { opacity: 1; transform: none; } }
+@keyframes estica { from { transform: scaleX(0); } to { transform: none; } }
+
+#progresso { position: absolute; left: 0; top: 0; width: 1080px; height: 10px; background: rgba(128,128,128,.28); z-index: 10; }
+#progresso b { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--roxo) 0 16.66%, var(--magenta) 16.66% 33.33%, var(--azul) 33.33% 50%, var(--laranja) 50% 66.66%, var(--verde) 66.66% 83.33%, var(--amarelo) 83.33% 100%); background-size: 1080px 100%; }
+
+/* legenda: faixa central, acima da área que a interface do Reels cobre */
+#legenda { position: absolute; left: 60px; right: 60px; top: 1316px; height: 210px; display: flex; align-items: center; justify-content: center; text-align: center; z-index: 9; }
+#legenda .linha { font-family: var(--display); font-size: 88px; line-height: 1.2; text-transform: uppercase; color: var(--off); text-wrap: balance; text-shadow: 0 4px 18px rgba(0,0,0,.55); }
+#legenda span { display: inline-block; margin: 0 .2em; }
+#legenda span.on { color: var(--amarelo); transform: scale(1.04); }
+body[data-tema="claro"] #legenda .linha { color: var(--preto); text-shadow: none; }
+body[data-tema="claro"] #legenda span.on { color: var(--magenta); }
+</style>
+</head>
+<body data-tema="escuro">
+{% for c in cenas %}
+<section class="cena {{ c.tipo }}{% if c.tema == 'claro' %} claro{% endif %}{% if c.manchete %} eh-manchete{% endif %}" style="--c: {{ c.cor }}">
+{% if c.tipo == 'abertura' %}
+  {% if c.fundo %}<div class="fundo"><img src="{{ c.fundo }}" alt="" style="animation-duration: {{ c.dur_ms }}ms"></div><div class="veu-abertura"></div>{% endif %}
+  <div class="topo"><span class="kicker">WooW! Daily Drops</span><span class="meta">{{ c.data }}</span></div>
+  <div class="arco"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="fit-area"><h1 class="fit" data-min="92" data-max="190" style="animation-duration: {{ c.dur_ms }}ms">{{ c.titulo }}</h1></div>
+  <div class="resumo meta"><span>Hoje no Drop: {{ c.n_itens }} notícias em 1 minuto</span>{% if c.fundo %}<span class="ia">Imagem ilustrativa · IA</span>{% endif %}</div>
+{% elif c.tipo == 'noticia' %}
+  <div class="topo"><span class="chip entra{% if c.manchete %} chip-manchete{% endif %}">{{ c.chip }}</span><span class="meta entra" style="animation-delay: 120ms">via {{ c.fonte }}</span></div>
+  <div class="faixa{% if not c.img %} vazia{% endif %}">
+    {% if c.img %}<img src="{{ c.img }}" alt="" style="animation-duration: {{ c.dur_ms }}ms"><span class="selo-ia">Imagem ilustrativa · IA</span>{% else %}<div class="num-grande pop">{{ c.num }}</div>{% endif %}
+    {% for b in c.beats %}
+    <div class="beat" data-ini="{{ b.ini_ms }}">
+      <div class="veu"></div>
+      <div class="dest-area"><div class="dest fit" data-min="64" data-max="210">{% if b.numero %}{{ b.pre }}<span class="conta" data-valor="{{ b.valor }}" data-casas="{{ b.casas }}">{{ b.numero }}</span>{{ b.suf }}{% else %}{{ b.texto }}{% endif %}</div></div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="fit-area titulo-area"><h2 class="fit entra" data-min="46" data-max="{{ 84 if c.manchete else 76 }}" style="animation-delay: 240ms">{{ c.titulo }}</h2></div>
+{% elif c.tipo == 'fecho' %}
+  <div class="topo"><span class="kicker">WooW! Daily Drops</span><span class="meta">Até amanhã</span></div>
+  <div class="arco estica"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="fit-area"><h2 class="fit entra" data-min="80" data-max="150" style="animation-delay: 120ms">Curte, compartilha e segue pra não perder nenhum Drop</h2></div>
+  <div class="cta entra" style="animation-delay: 320ms">Segue o perfil</div>
+  <div class="assina meta entra" style="animation-delay: 420ms">O Drop sai todo dia · LET'S GET PHYGITAL</div>
+{% endif %}
+</section>
+{% endfor %}
+<div id="progresso"><b></b></div>
+<div id="legenda"><div class="linha"></div></div>
+<script type="application/json" id="dados">{{ dados_json | safe }}</script>
+<script>
+const D = JSON.parse(document.getElementById('dados').textContent);
+const cenas = [...document.querySelectorAll('.cena')];
+const barra = document.querySelector('#progresso b');
+const linha = document.querySelector('#legenda .linha');
+let legendaAtual = -2;
+
+// Maior corpo que cabe na caixa, por busca binária (mesma ideia do fit.js do Carousel_Plus).
+function ajustar(el) {
+  const caixa = el.parentElement;
+  const min = +el.dataset.min, max = +el.dataset.max;
+  const cabe = px => {
+    el.style.fontSize = px + 'px';
+    return el.scrollHeight <= caixa.clientHeight + 1 && el.scrollWidth <= el.clientWidth + 1;
+  };
+  if (!cabe(min)) return false;
+  let lo = min, hi = max;
+  for (let i = 0; i < 16; i++) { const m = (lo + hi) / 2; if (cabe(m)) lo = m; else hi = m; }
+  cabe(lo);
+  return true;
+}
+
+async function preparar() {
+  await Promise.all([document.fonts.load('80px Anton'), document.fonts.load('700 60px Inter'), document.fonts.load('400 28px Inter')]);
+  await document.fonts.ready;
+  await Promise.all([...document.images].map(img => img.complete ? null : new Promise(ok => { img.onload = img.onerror = ok; })));
+  window.__estouros = [...document.querySelectorAll('.fit')].filter(el => !ajustar(el)).map(el => el.textContent.trim().slice(0, 70));
+  window.__fontes = { anton: document.fonts.check('80px Anton'), inter: document.fonts.check('700 60px Inter') };
+  window.__imagens = [...document.images].every(img => img.naturalWidth > 0);
+  window.__pronto = true;
+}
+
+function seek(t) {
+  let i = D.cenas.findIndex(c => t < c.fim);
+  if (i < 0) i = D.cenas.length - 1;
+  cenas.forEach((el, k) => el.classList.toggle('ativa', k === i));
+  const c = D.cenas[i], cena = cenas[i];
+  document.body.dataset.tema = c.tema;
+  const ms = Math.max(0, (t - c.ini) * 1000);
+
+  // cada frase acende o seu destaque e apaga o anterior
+  const beats = [...cena.querySelectorAll('.beat')];
+  let atual = -1;
+  beats.forEach((b, k) => { if (ms >= +b.dataset.ini) atual = k; });
+  beats.forEach((b, k) => b.classList.toggle('on', k === atual));
+
+  // a partir do 1º destaque o título sai de cena (350ms, desacelerando)
+  const p = beats.length ? Math.min(1, Math.max(0, (ms - +beats[0].dataset.ini) / 350)) : 0;
+  cena.style.setProperty('--recuo', (1 - Math.pow(1 - p, 3)).toFixed(3));
+
+  // animação dentro de um destaque conta a partir do início dele; o resto, do início da cena
+  for (const a of cena.getAnimations({ subtree: true })) {
+    const alvo = a.effect && a.effect.target;
+    const beat = alvo && alvo.closest ? alvo.closest('.beat') : null;
+    a.pause();
+    a.currentTime = Math.max(0, beat ? ms - +beat.dataset.ini : ms);
+  }
+  if (atual >= 0) {
+    const b = beats[atual];
+    const q = Math.min(1, (ms - +b.dataset.ini) / 700), e = 1 - Math.pow(1 - q, 3);
+    b.querySelectorAll('.conta').forEach(el => {
+      const casas = +el.dataset.casas;
+      el.textContent = (+el.dataset.valor * e).toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
+    });
+  }
+  barra.style.width = Math.min(100, 100 * t / D.duracao).toFixed(3) + '%';
+
+  const k = D.legendas.findIndex(l => t >= l.ini && t < l.fim);
+  if (k !== legendaAtual) {
+    legendaAtual = k;
+    linha.replaceChildren(...(k < 0 ? [] : D.legendas[k].palavras.map(p => Object.assign(document.createElement('span'), { textContent: p.t }))));
+  }
+  if (k >= 0) {
+    const ps = D.legendas[k].palavras;
+    [...linha.children].forEach((s, j) => s.classList.toggle('on', t >= ps[j].ini && (j === ps.length - 1 || t < ps[j + 1].ini)));
+  }
+}
+
+preparar();
+</script>
+</body>
+</html>

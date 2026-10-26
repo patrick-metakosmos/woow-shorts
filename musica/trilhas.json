@@ -1,0 +1,92 @@
+{
+  "trilha-01-minimal-pulse.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. upbeat minimal electronic, 120 BPM, crisp hi-hats, soft sub bass, bright synth plucks, optimistic and modern.",
+    "seed": 1001,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-02-synthwave.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. driving synthwave pulse, 110 BPM, arpeggiated analog synths, steady kick, confident tech-launch energy.",
+    "seed": 1002,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-04-future-garage.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. future garage beat, half-time feel, airy pads, chopped percussion, sleek night-city vibe.",
+    "seed": 1004,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-05-lofi-house.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental lo-fi house, 122 BPM, dusty drums, mellow electric piano chords, relaxed but moving.",
+    "seed": 3005,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-06-minimal-techno.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental minimal techno groove, 124 BPM, tight kick and clap, hypnotic synth stab, clean and focused.",
+    "seed": 3006,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-07-nu-disco.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. funky nu-disco, 116 BPM, synth bass, disco hi-hats, playful and positive.",
+    "seed": 1007,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-08-afro-house.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. afro house percussion bed, 120 BPM, organic congas and shakers, subtle marimba, energetic and warm.",
+    "seed": 1008,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-09-tech-pulse.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental cinematic tech pulse, 100 BPM, ticking percussion, evolving synth textures, curious and positive.",
+    "seed": 3009,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-10-chillhop.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. chillhop beat, 90 BPM, soft boom-bap drums, jazzy keys, smooth and curious.",
+    "seed": 1010,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-11-electro-pop.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. electro pop, 118 BPM, bouncy bass, glossy synth chords, bright and youthful.",
+    "seed": 1011,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-12-uk-garage.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. UK garage shuffle, 130 BPM, swung hi-hats, warm organ stabs, fresh and urban.",
+    "seed": 1012,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-13-funk-br.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. Brazilian funk inspired light percussion groove, tamborzao rhythm, clean synth bass, fun and energetic.",
+    "seed": 1013,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-14-ambient-pulse.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. ambient electronic pulse, 105 BPM, glassy plucks, soft kick, calm and premium.",
+    "seed": 1014,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-15-indie-electronic.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. indie electronic groove, 112 BPM, live-feel drums, clean guitar arpeggio, optimistic and human.",
+    "seed": 1015,
+    "gerado_em": "2026-09-11"
+  },
+  "trilha-03-bossa-house.m4a": {
+    "modelo": "Vertex AI lyria-002",
+    "prompt": "Instrumental background bed for a fast daily tech and retail news video, sits under a voice-over, loopable. Brazilian electronic bossa groove, 118 BPM, light nylon guitar chops, shaker, deep house kick, warm and sophisticated.",
+    "seed": 1003,
+    "gerado_em": "2026-09-11"
+  }
+}

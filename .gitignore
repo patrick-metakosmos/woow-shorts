@@ -1,0 +1,7 @@
+.env
+output/
+__pycache__/
+*.pyc
+
+# estado de execucao, muda a cada rodada
+historico.json
